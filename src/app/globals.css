@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Background */
+  --bg-void: #0e0720;
+  --bg-deep: #1a0f35;
+  --bg-card: #231545;
+  --bg-glass: rgba(255, 181, 232, 0.06);
+
+  /* Cotton Candy 팔레트 */
+  --candy-pink: #ffb5e8;
+  --candy-lav: #c9a8ff;
+  --candy-mint: #a8f5db;
+  --candy-peach: #ffcba4;
+  --candy-sky: #a8dcff;
+  --candy-butter: #fff5b8;
+
+  /* Semantic */
+  --positive: #a8f5db;
+  --negative: #ffb5e8;
+  --warning: #ffcba4;
+
+  /* Text */
+  --text-primary: #f4e8ff;
+  --text-secondary: #c4a8e8;
+  --text-muted: #7a5fa0;
+
+  /* Border */
+  --border-soft: rgba(201, 168, 255, 0.15);
+  --border-glow: rgba(255, 181, 232, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #0e0720;
+  color: #f4e8ff;
+  font-family: var(--font-noto), sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 숫자는 항상 Space Grotesk */
+.num {
+  font-family: var(--font-space), monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* 유리 카드 */
+.glass-card {
+  background: rgba(35, 21, 69, 0.6);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(201, 168, 255, 0.15);
+  border-radius: 1.5rem;
+}
+
+/* 솜사탕 그라데이션 텍스트 */
+.text-candy {
+  background: linear-gradient(135deg, #ffb5e8 0%, #c9a8ff 50%, #a8dcff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* 네온 글로우 인풋 */
+.candy-input {
+  background: rgba(14, 7, 32, 0.8);
+  border: 1px solid rgba(201, 168, 255, 0.2);
+  border-radius: 1rem;
+  color: #f4e8ff;
+  font-family: var(--font-space), monospace;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+
+.candy-input:focus {
+  border-color: rgba(255, 181, 232, 0.5);
+  box-shadow: 0 0 0 3px rgba(255, 181, 232, 0.1);
+}
+
+/* 스크롤바 */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0e0720;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 255, 0.3);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 181, 232, 0.5);
+}
+
+/* 배경 블롭 */
+.blob-bg {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.12;
+  animation: blob 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
