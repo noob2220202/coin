@@ -48,12 +48,12 @@ export default function Home() {
     <div className="mx-auto max-w-6xl px-5 pb-24">
       {/* 히어로 */}
       <section className="flex flex-col items-center text-center gap-4 py-16">
-        <span className="font-noto text-sm text-muted">업비트 기준 실시간</span>
+        <span className="font-noto text-sm text-muted">실시간 환율 (USD/KRW)</span>
         <div className="font-space text-candy-pink" style={{ fontSize: 'clamp(48px, 10vw, 96px)', fontWeight: 300 }}>
-          {usdtKrw !== null ? (
-            <NumberTicker value={usdtKrw} suffix="원" />
+          {usdKrw !== null ? (
+            <NumberTicker value={usdKrw} decimals={2} suffix="원" />
           ) : (
-            <span className="text-muted">연결 중...</span>
+            <span className="text-muted">불러오는 중...</span>
           )}
         </div>
         <div className="mt-2">
