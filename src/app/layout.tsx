@@ -1,37 +1,21 @@
 import type { Metadata } from 'next'
-import { Noto_Sans_KR, Gowun_Dodum, Space_Grotesk, Quicksand } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import BlobBackground from '@/components/BlobBackground'
 import Navbar from '@/components/Navbar'
+import '@fontsource/noto-sans-kr/300.css'
+import '@fontsource/noto-sans-kr/400.css'
+import '@fontsource/noto-sans-kr/500.css'
+import '@fontsource/noto-sans-kr/700.css'
+import '@fontsource/gowun-dodum/400.css'
+import '@fontsource/space-grotesk/300.css'
+import '@fontsource/space-grotesk/400.css'
+import '@fontsource/space-grotesk/500.css'
+import '@fontsource/space-grotesk/600.css'
+import '@fontsource/space-grotesk/700.css'
+import '@fontsource/quicksand/400.css'
+import '@fontsource/quicksand/500.css'
+import '@fontsource/quicksand/600.css'
 import './globals.css'
-
-const notoSansKR = Noto_Sans_KR({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '700'],
-  variable: '--font-noto',
-  display: 'swap',
-})
-
-const gowunDodum = Gowun_Dodum({
-  subsets: ['latin'],
-  weight: ['400'],
-  variable: '--font-gowun',
-  display: 'swap',
-})
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700'],
-  variable: '--font-space',
-  display: 'swap',
-})
-
-const quicksand = Quicksand({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-quick',
-  display: 'swap',
-})
 
 export const metadata: Metadata = {
   title: '🍭 솜사탕 크립토 — 실시간 시세 · 스왑 · 에너지',
@@ -49,9 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body
-        className={`${notoSansKR.variable} ${gowunDodum.variable} ${spaceGrotesk.variable} ${quicksand.variable} antialiased`}
-      >
+      <body className="antialiased">
         <BlobBackground />
         <Navbar />
         <main className="relative z-10 pt-24">{children}</main>

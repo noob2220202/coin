@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 :root {
+  /* 폰트 (self-hosted via @fontsource, Google Fonts CDN 미사용) */
+  --font-noto: 'Noto Sans KR', sans-serif;
+  --font-gowun: 'Gowun Dodum', sans-serif;
+  --font-space: 'Space Grotesk', monospace;
+  --font-quick: 'Quicksand', sans-serif;
+
   /* Background */
   --bg-void: #0e0720;
   --bg-deep: #1a0f35;
