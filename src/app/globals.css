@@ -10,32 +10,32 @@
   --font-quick: 'Quicksand', sans-serif;
 
   /* Background */
-  --bg-void: #0e0720;
-  --bg-deep: #1a0f35;
-  --bg-card: #231545;
-  --bg-glass: rgba(255, 181, 232, 0.06);
+  --bg-void: #ffffff;
+  --bg-deep: #eaf6ff;
+  --bg-card: #f2ebff;
+  --bg-glass: rgba(255, 255, 255, 0.55);
 
   /* Cotton Candy 팔레트 */
-  --candy-pink: #ffb5e8;
-  --candy-lav: #c9a8ff;
-  --candy-mint: #a8f5db;
-  --candy-peach: #ffcba4;
-  --candy-sky: #a8dcff;
-  --candy-butter: #fff5b8;
+  --candy-pink: #ff6fcf;
+  --candy-lav: #8b6bff;
+  --candy-mint: #1fd7a8;
+  --candy-peach: #ff8f5e;
+  --candy-sky: #3daeff;
+  --candy-butter: #ffc93d;
 
   /* Semantic */
-  --positive: #a8f5db;
-  --negative: #ffb5e8;
-  --warning: #ffcba4;
+  --positive: #1fd7a8;
+  --negative: #ff6fcf;
+  --warning: #ff8f5e;
 
   /* Text */
-  --text-primary: #f4e8ff;
-  --text-secondary: #c4a8e8;
-  --text-muted: #7a5fa0;
+  --text-primary: #4a3470;
+  --text-secondary: #7a5fae;
+  --text-muted: #8b7bae;
 
   /* Border */
-  --border-soft: rgba(201, 168, 255, 0.15);
-  --border-glow: rgba(255, 181, 232, 0.3);
+  --border-soft: rgba(139, 107, 255, 0.18);
+  --border-glow: rgba(255, 111, 207, 0.35);
 }
 
 * {
@@ -49,8 +49,9 @@ html {
 }
 
 body {
-  background-color: #0e0720;
-  color: #f4e8ff;
+  background: linear-gradient(160deg, #eaf6ff 0%, #f3ecff 45%, #ffeaf7 75%, #fff4e3 100%);
+  background-attachment: fixed;
+  color: #4a3470;
   font-family: var(--font-noto), sans-serif;
   -webkit-font-smoothing: antialiased;
 }
@@ -62,37 +63,42 @@ body {
   letter-spacing: -0.01em;
 }
 
-/* 유리 카드 */
+/* 몽글몽글 유리 카드 */
 .glass-card {
-  background: rgba(35, 21, 69, 0.6);
+  background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(201, 168, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 1.5rem;
+  box-shadow: 0 12px 32px rgba(139, 107, 255, 0.12), 0 4px 12px rgba(255, 111, 207, 0.08);
 }
 
 /* 솜사탕 그라데이션 텍스트 */
 .text-candy {
-  background: linear-gradient(135deg, #ffb5e8 0%, #c9a8ff 50%, #a8dcff 100%);
+  background: linear-gradient(135deg, #ff6fcf 0%, #8b6bff 50%, #3daeff 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* 네온 글로우 인풋 */
+/* 몽글몽글 글로우 인풋 */
 .candy-input {
-  background: rgba(14, 7, 32, 0.8);
-  border: 1px solid rgba(201, 168, 255, 0.2);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(139, 107, 255, 0.22);
   border-radius: 1rem;
-  color: #f4e8ff;
+  color: #4a3470;
   font-family: var(--font-space), monospace;
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
 }
 
+.candy-input::placeholder {
+  color: #b7a9d6;
+}
+
 .candy-input:focus {
-  border-color: rgba(255, 181, 232, 0.5);
-  box-shadow: 0 0 0 3px rgba(255, 181, 232, 0.1);
+  border-color: rgba(255, 111, 207, 0.55);
+  box-shadow: 0 0 0 3px rgba(255, 111, 207, 0.12);
 }
 
 /* 스크롤바 */
@@ -100,17 +106,17 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0e0720;
+  background: #eaf6ff;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(201, 168, 255, 0.3);
+  background: rgba(139, 107, 255, 0.3);
   border-radius: 10px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 181, 232, 0.5);
+  background: rgba(255, 111, 207, 0.5);
 }
 
-/* 배경 블롭 */
+/* 배경 색감 블롭 (파스텔 색 번짐) */
 .blob-bg {
   position: fixed;
   inset: 0;
@@ -122,9 +128,15 @@ body {
 .blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.12;
+  filter: blur(100px);
+  opacity: 0.55;
   animation: blob 12s ease-in-out infinite;
+}
+
+/* 몽글몽글 구름 모양 (겹친 원으로 구성) */
+.cloud-shape {
+  position: relative;
+  filter: drop-shadow(0 10px 18px rgba(139, 107, 255, 0.18));
 }
 
 @media (prefers-reduced-motion: reduce) {

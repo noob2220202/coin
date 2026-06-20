@@ -27,8 +27,8 @@ export default function CandyButton({
 }: CandyButtonProps) {
   return (
     <motion.button
-      whileHover={disabled ? undefined : { scale: 1.02 }}
-      whileTap={disabled ? undefined : { scale: 0.98 }}
+      whileHover={disabled ? undefined : { scale: 1.05, y: -2, rotate: 1 }}
+      whileTap={disabled ? undefined : { scale: 0.96, rotate: -1 }}
       disabled={disabled}
       className={`rounded-full px-8 py-3 font-quick font-semibold transition-shadow ${
         disabled

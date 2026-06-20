@@ -20,7 +20,7 @@ export default function Navbar() {
   return (
     <header
       className="fixed top-0 left-0 right-0 z-50 border-b border-soft"
-      style={{ background: 'rgba(14,7,32,0.8)', backdropFilter: 'blur(20px)' }}
+      style={{ background: 'rgba(255,255,255,0.7)', backdropFilter: 'blur(20px)' }}
     >
       <nav className="mx-auto max-w-6xl flex items-center justify-between px-5 py-4">
         <Link href="/" className="font-gowun text-xl text-candy">

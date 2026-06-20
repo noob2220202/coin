@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Toaster } from 'react-hot-toast'
-import BlobBackground from '@/components/BlobBackground'
+import CloudBackground from '@/components/CloudBackground'
 import Navbar from '@/components/Navbar'
 import '@fontsource/jua/400.css'
 import '@fontsource/space-grotesk/300.css'
@@ -30,16 +30,17 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="antialiased">
-        <BlobBackground />
+        <CloudBackground />
         <Navbar />
         <main className="relative z-10 pt-24">{children}</main>
         <Toaster
           toastOptions={{
             style: {
-              background: '#231545',
-              color: '#FFB5E8',
-              border: '1px solid rgba(255,181,232,0.3)',
+              background: '#FFFFFF',
+              color: '#8B6BFF',
+              border: '1px solid rgba(139,107,255,0.25)',
               borderRadius: '1rem',
+              boxShadow: '0 8px 24px rgba(139,107,255,0.15)',
             },
           }}
         />
