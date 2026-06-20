@@ -38,10 +38,21 @@ export default function Home() {
   }, [setUpbit, setUpbitConnected])
 
   useEffect(() => {
-    const loadRate = () => fetchUsdKrw().then(setUsdKrw).catch(() => {})
+    let retryTimer: ReturnType<typeof setTimeout>
+    const loadRate = () => {
+      fetchUsdKrw()
+        .then(setUsdKrw)
+        .catch((err) => {
+          console.error('[환율] 불러오기 실패', err)
+          retryTimer = setTimeout(loadRate, 10 * 1000)
+        })
+    }
     loadRate()
     const interval = setInterval(loadRate, 5 * 60 * 1000)
-    return () => clearInterval(interval)
+    return () => {
+      clearInterval(interval)
+      clearTimeout(retryTimer)
+    }
   }, [setUsdKrw])
 
   return (
