@@ -4,7 +4,7 @@
 
 :root {
   /* 폰트 (self-hosted via @fontsource, Google Fonts CDN 미사용) */
-  --font-noto: 'Noto Sans KR', sans-serif;
+  --font-noto: 'Jua', sans-serif;
   --font-gowun: 'Jua', sans-serif;
   --font-space: 'Space Grotesk', monospace;
   --font-quick: 'Quicksand', sans-serif;

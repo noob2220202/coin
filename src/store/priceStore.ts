@@ -36,9 +36,9 @@ export const usePriceStore = create<PriceState>((set, get) => ({
 
   setUpbit: (usdt, btc) => {
     set({ usdtKrw: usdt, btcKrw: btc, lastUpdated: new Date() })
-    const { btcUsdt, usdKrw } = get()
-    if (btcUsdt && usdKrw) {
-      const fair = btcUsdt * usdKrw
+    const { btcUsdt } = get()
+    if (btcUsdt) {
+      const fair = btcUsdt * usdt
       const kimp = ((btc - fair) / fair) * 100
       set({ kimpPercent: kimp })
     }
@@ -46,9 +46,9 @@ export const usePriceStore = create<PriceState>((set, get) => ({
 
   setBinance: (btcUsdt) => {
     set({ btcUsdt })
-    const { btcKrw, usdKrw } = get()
-    if (btcKrw && usdKrw) {
-      const fair = btcUsdt * usdKrw
+    const { btcKrw, usdtKrw } = get()
+    if (btcKrw && usdtKrw) {
+      const fair = btcUsdt * usdtKrw
       const kimp = ((btcKrw - fair) / fair) * 100
       set({ kimpPercent: kimp })
     }

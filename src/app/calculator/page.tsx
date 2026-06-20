@@ -4,7 +4,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { usePriceStore } from '@/store/priceStore'
 import { connectUpbitWS } from '@/lib/upbit'
 import { connectBinanceWS } from '@/lib/binance'
-import { fetchUsdKrw } from '@/lib/exchangeRate'
 import GlassCard from '@/components/ui/GlassCard'
 import NumberTicker from '@/components/ui/NumberTicker'
 
@@ -23,7 +22,7 @@ function fromKrw(krw: number, unit: Unit, usdtKrw: number, btcKrw: number): numb
 }
 
 export default function CalculatorPage() {
-  const { usdtKrw, btcKrw, btcUsdt, usdKrw, kimpPercent, setUpbit, setBinance, setUsdKrw } = usePriceStore()
+  const { usdtKrw, btcKrw, btcUsdt, kimpPercent, setUpbit, setBinance } = usePriceStore()
 
   useEffect(() => {
     let usdt = 0
@@ -42,13 +41,6 @@ export default function CalculatorPage() {
     }
   }, [setUpbit, setBinance])
 
-  useEffect(() => {
-    const loadRate = () => fetchUsdKrw().then(setUsdKrw).catch(() => {})
-    loadRate()
-    const interval = setInterval(loadRate, 5 * 60 * 1000)
-    return () => clearInterval(interval)
-  }, [setUsdKrw])
-
   const [amount, setAmount] = useState('1')
   const [fromUnit, setFromUnit] = useState<Unit>('USDT')
   const [toUnit, setToUnit] = useState<Unit>('KRW')
@@ -61,7 +53,7 @@ export default function CalculatorPage() {
     return fromKrw(krw, toUnit, usdtKrw, btcKrw)
   }, [amount, fromUnit, toUnit, usdtKrw, btcKrw])
 
-  const overseasKrw = btcUsdt && usdKrw ? btcUsdt * usdKrw : null
+  const overseasKrw = btcUsdt && usdtKrw ? btcUsdt * usdtKrw : null
 
   const profitPercent = useMemo(() => {
     const buy = Number(buyPrice)

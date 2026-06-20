@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@fontsource/jua": "^5.2.8",
-    "@fontsource/noto-sans-kr": "^5.2.9",
     "@fontsource/quicksand": "^5.2.10",
     "@fontsource/space-grotesk": "^5.2.10",
     "axios": "^1.18.0",
