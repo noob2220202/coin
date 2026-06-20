@@ -22,7 +22,7 @@ function fromKrw(krw: number, unit: Unit, usdtKrw: number, btcKrw: number): numb
 }
 
 export default function CalculatorPage() {
-  const { usdtKrw, btcKrw, btcUsdt, kimpPercent, setUpbit, setBinance } = usePriceStore()
+  const { usdtKrw, btcKrw, setUpbit, setBinance } = usePriceStore()
 
   useEffect(() => {
     let usdt = 0
@@ -44,7 +44,6 @@ export default function CalculatorPage() {
   const [amount, setAmount] = useState('1')
   const [fromUnit, setFromUnit] = useState<Unit>('USDT')
   const [toUnit, setToUnit] = useState<Unit>('KRW')
-  const [buyPrice, setBuyPrice] = useState('')
 
   const result = useMemo(() => {
     const num = Number(amount)
@@ -52,14 +51,6 @@ export default function CalculatorPage() {
     const krw = toKrw(num, fromUnit, usdtKrw, btcKrw)
     return fromKrw(krw, toUnit, usdtKrw, btcKrw)
   }, [amount, fromUnit, toUnit, usdtKrw, btcKrw])
-
-  const overseasKrw = btcUsdt && usdtKrw ? btcUsdt * usdtKrw : null
-
-  const profitPercent = useMemo(() => {
-    const buy = Number(buyPrice)
-    if (!buy || !btcKrw) return null
-    return ((btcKrw - buy) / buy) * 100
-  }, [buyPrice, btcKrw])
 
   return (
     <div className="mx-auto max-w-xl px-5 pb-24 flex flex-col gap-8">
@@ -95,49 +86,6 @@ export default function CalculatorPage() {
             <option value="USDT">USDT</option>
             <option value="BTC">BTC</option>
           </select>
-        </div>
-      </GlassCard>
-
-      <div className="border-t border-soft" />
-
-      <GlassCard glow="pink" className="p-6 flex flex-col gap-4">
-        <h2 className="font-gowun text-lg text-candy">🍬 김프/역프 기준 손익 계산 (BTC)</h2>
-
-        <div>
-          <span className="font-quick text-xs text-muted">내 매수가 (KRW)</span>
-          <input
-            type="number"
-            value={buyPrice}
-            onChange={(e) => setBuyPrice(e.target.value)}
-            placeholder="0"
-            className="candy-input w-full px-4 py-3 mt-1 num"
-          />
-        </div>
-
-        <div className="flex justify-between font-noto text-sm">
-          <span className="text-muted">현재 국내가</span>
-          <span className="num text-candy-lav">{btcKrw ? btcKrw.toLocaleString() : '--'} KRW</span>
-        </div>
-
-        <div className="flex justify-between font-noto text-sm">
-          <span className="text-muted">현재 해외가 (환산)</span>
-          <span className="num text-candy-sky">
-            {overseasKrw ? Math.round(overseasKrw).toLocaleString() : '--'} KRW
-          </span>
-        </div>
-
-        <div className="flex justify-between font-noto text-sm">
-          <span className="text-muted">현재 김프/역프</span>
-          <span className={`num ${kimpPercent !== null && kimpPercent >= 0 ? 'text-candy-mint' : 'text-candy-pink'}`}>
-            {kimpPercent !== null ? `${kimpPercent >= 0 ? '+' : ''}${kimpPercent.toFixed(2)}%` : '--'}
-          </span>
-        </div>
-
-        <div className="flex justify-between font-noto text-base pt-2 border-t border-soft">
-          <span className="text-secondary">예상 수익</span>
-          <span className={`num font-medium ${profitPercent !== null && profitPercent >= 0 ? 'text-candy-mint' : 'text-candy-pink'}`}>
-            {profitPercent !== null ? `${profitPercent >= 0 ? '+' : ''}${profitPercent.toFixed(2)}%` : '--'}
-          </span>
         </div>
       </GlassCard>
     </div>
