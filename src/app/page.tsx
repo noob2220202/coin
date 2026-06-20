@@ -2,11 +2,11 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
+import axios from 'axios'
 import { motion } from 'framer-motion'
 import { ArrowLeftRight, Zap, Calculator } from 'lucide-react'
 import { usePriceStore } from '@/store/priceStore'
 import { connectUpbitWS } from '@/lib/upbit'
-import { fetchUsdKrw } from '@/lib/exchangeRate'
 import NumberTicker from '@/components/ui/NumberTicker'
 import KimpBadge from '@/components/KimpBadge'
 import PriceCard from '@/components/PriceCard'
@@ -40,8 +40,9 @@ export default function Home() {
   useEffect(() => {
     let retryTimer: ReturnType<typeof setTimeout>
     const loadRate = () => {
-      fetchUsdKrw()
-        .then(setUsdKrw)
+      axios
+        .get('/api/exchange-rate')
+        .then(({ data }) => setUsdKrw(data.rate))
         .catch((err) => {
           console.error('[환율] 불러오기 실패', err)
           retryTimer = setTimeout(loadRate, 10 * 1000)

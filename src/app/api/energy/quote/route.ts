@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getEnergyQuote } from '@/lib/tronnrg'
+import { getEnergyQuote } from '@/lib/feee'
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)

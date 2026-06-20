@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getRentStatus } from '@/lib/tronnrg'
+import { getOrderStatus } from '@/lib/feee'
 
-export async function GET(req: NextRequest, { params }: { params: { txHash: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { orderNo: string } }) {
   try {
-    const data = await getRentStatus(params.txHash)
+    const data = await getOrderStatus(params.orderNo)
     return NextResponse.json(data)
   } catch (err) {
     return NextResponse.json(

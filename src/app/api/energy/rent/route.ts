@@ -1,19 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { rentEnergy } from '@/lib/tronnrg'
+import { rentEnergy } from '@/lib/feee'
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
-  const { receiver, energy, duration, payer } = body
+  const { receiver, energy, duration } = body
 
-  if (!receiver || !energy || !duration || !payer) {
+  if (!receiver || !energy || !duration) {
     return NextResponse.json(
-      { error: 'receiver, energy, duration, payer가 필요합니다' },
+      { error: 'receiver, energy, duration이 필요합니다' },
       { status: 400 }
     )
   }
 
   try {
-    const data = await rentEnergy({ receiver, energy, duration, payer })
+    const data = await rentEnergy({ receiver, energy, duration })
     return NextResponse.json(data)
   } catch (err) {
     return NextResponse.json(

@@ -26,7 +26,7 @@ export default function EnergyWidget() {
   const [quoting, setQuoting] = useState(false)
   const [quote, setQuote] = useState<number | null>(null)
   const [renting, setRenting] = useState(false)
-  const [rentResult, setRentResult] = useState<{ txHash: string } | null>(null)
+  const [rentResult, setRentResult] = useState<{ orderNo: string } | null>(null)
   const [rentStatus, setRentStatus] = useState<string | null>(null)
   const [showConfetti, setShowConfetti] = useState(false)
 
@@ -70,12 +70,15 @@ export default function EnergyWidget() {
     if (!rentResult) return
     const interval = setInterval(async () => {
       try {
-        const { data } = await axios.get(`/api/energy/status/${rentResult.txHash}`)
+        const { data } = await axios.get(`/api/energy/status/${rentResult.orderNo}`)
         setRentStatus(data.status)
-        if (data.status === 'completed' || data.status === 'success') {
+        if (data.status === 'completed') {
           clearInterval(interval)
           setShowConfetti(true)
           setTimeout(() => setShowConfetti(false), 2000)
+        } else if (data.status === 'refunded') {
+          clearInterval(interval)
+          toast.error('에너지 전송에 실패하여 환불되었어요 🍭')
         }
       } catch {
         // 무시하고 다음 폴링에서 재시도
@@ -97,9 +100,8 @@ export default function EnergyWidget() {
         receiver,
         energy: energyNum,
         duration,
-        payer: receiver,
       })
-      setRentResult({ txHash: data.txHash })
+      setRentResult({ orderNo: data.orderNo })
       setRentStatus(data.status ?? 'pending')
       toast.success('에너지 임대 요청이 접수되었어요 🍭')
     } catch {
@@ -143,7 +145,9 @@ export default function EnergyWidget() {
       <p className="font-noto text-sm text-secondary text-center">
         현재 에너지 가격:{' '}
         <span className="num text-candy-lav">
-          {priceInfo ? `${priceInfo.price_trx} TRX / 1만` : '불러오는 중...'}
+          {priceInfo
+            ? `${priceInfo.price_trx} TRX / ${(priceInfo.reference_energy / 10000).toLocaleString()}만`
+            : '불러오는 중...'}
         </span>
       </p>
 

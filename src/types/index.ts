@@ -45,6 +45,7 @@ export interface EnergyPriceInfo {
   price_trx: number
   price_sun: number
   available: number
+  reference_energy: number
 }
 
 export interface EnergyQuote {
@@ -53,6 +54,7 @@ export interface EnergyQuote {
 }
 
 export interface RentEnergyResult {
-  txHash: string
+  orderNo: string
+  payAmount: number
   status: string
 }
