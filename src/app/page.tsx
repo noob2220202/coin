@@ -6,7 +6,6 @@ import { motion } from 'framer-motion'
 import { ArrowLeftRight, Zap, Calculator } from 'lucide-react'
 import { usePriceStore } from '@/store/priceStore'
 import { connectUpbitWS } from '@/lib/upbit'
-import { connectBinanceWS } from '@/lib/binance'
 import { fetchUsdKrw } from '@/lib/exchangeRate'
 import NumberTicker from '@/components/ui/NumberTicker'
 import KimpBadge from '@/components/KimpBadge'
@@ -20,7 +19,7 @@ const SHORTCUTS = [
 ]
 
 export default function Home() {
-  const { usdtKrw, btcKrw, usdKrw, kimpPercent, upbitConnected, binanceConnected, setUpbit, setBinance, setUsdKrw, setUpbitConnected, setBinanceConnected } =
+  const { usdtKrw, btcKrw, usdKrw, kimpPercent, upbitConnected, setUpbit, setUsdKrw, setUpbitConnected } =
     usePriceStore()
 
   useEffect(() => {
@@ -33,15 +32,10 @@ export default function Home() {
       if (usdt && btc) setUpbit(usdt, btc)
     }, setUpbitConnected)
 
-    const binanceWs = connectBinanceWS((symbol, price) => {
-      if (symbol === 'BTCUSDT') setBinance(price)
-    }, setBinanceConnected)
-
     return () => {
       upbitWs.close()
-      binanceWs.close()
     }
-  }, [setUpbit, setBinance, setUpbitConnected, setBinanceConnected])
+  }, [setUpbit, setUpbitConnected])
 
   useEffect(() => {
     const loadRate = () => fetchUsdKrw().then(setUsdKrw).catch(() => {})
@@ -65,7 +59,7 @@ export default function Home() {
         <div className="mt-2">
           <KimpBadge percent={kimpPercent} />
         </div>
-        {(!upbitConnected || !binanceConnected) && (
+        {!upbitConnected && (
           <span className="font-noto text-xs text-candy-peach">재연결 중...</span>
         )}
       </section>

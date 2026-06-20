@@ -4,57 +4,46 @@ interface PriceState {
   // 업비트
   usdtKrw: number | null
   btcKrw: number | null
-  // 바이낸스
-  usdtUsdt: number | null
-  btcUsdt: number | null
-  // 환율
+  // 환율 (테더 프리미엄 기준값)
   usdKrw: number | null
-  // 계산값
+  // 계산값 (테더 기준 김프/역프)
   kimpPercent: number | null
   lastUpdated: Date | null
   // 연결 상태
   upbitConnected: boolean
-  binanceConnected: boolean
   // 세터
   setUpbit: (usdt: number, btc: number) => void
-  setBinance: (btc: number) => void
   setUsdKrw: (rate: number) => void
   setUpbitConnected: (connected: boolean) => void
-  setBinanceConnected: (connected: boolean) => void
+}
+
+function calcKimp(usdtKrw: number, usdKrw: number): number {
+  return ((usdtKrw - usdKrw) / usdKrw) * 100
 }
 
 export const usePriceStore = create<PriceState>((set, get) => ({
   usdtKrw: null,
   btcKrw: null,
-  usdtUsdt: 1,
-  btcUsdt: null,
   usdKrw: null,
   kimpPercent: null,
   lastUpdated: null,
   upbitConnected: false,
-  binanceConnected: false,
 
   setUpbit: (usdt, btc) => {
     set({ usdtKrw: usdt, btcKrw: btc, lastUpdated: new Date() })
-    const { btcUsdt } = get()
-    if (btcUsdt) {
-      const fair = btcUsdt * usdt
-      const kimp = ((btc - fair) / fair) * 100
-      set({ kimpPercent: kimp })
+    const { usdKrw } = get()
+    if (usdKrw) {
+      set({ kimpPercent: calcKimp(usdt, usdKrw) })
     }
   },
 
-  setBinance: (btcUsdt) => {
-    set({ btcUsdt })
-    const { btcKrw, usdtKrw } = get()
-    if (btcKrw && usdtKrw) {
-      const fair = btcUsdt * usdtKrw
-      const kimp = ((btcKrw - fair) / fair) * 100
-      set({ kimpPercent: kimp })
+  setUsdKrw: (rate) => {
+    set({ usdKrw: rate })
+    const { usdtKrw } = get()
+    if (usdtKrw) {
+      set({ kimpPercent: calcKimp(usdtKrw, rate) })
     }
   },
 
-  setUsdKrw: (rate) => set({ usdKrw: rate }),
   setUpbitConnected: (connected) => set({ upbitConnected: connected }),
-  setBinanceConnected: (connected) => set({ binanceConnected: connected }),
 }))

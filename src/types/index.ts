@@ -6,18 +6,6 @@ export interface UpbitTickerMessage {
   change: 'RISE' | 'FALL' | 'EVEN'
 }
 
-export interface BinanceMiniTicker {
-  e: string
-  E: number
-  s: string
-  c: string
-  o: string
-  h: string
-  l: string
-  v: string
-  q: string
-}
-
 export interface CurrencyInfo {
   ticker: string
   name: string

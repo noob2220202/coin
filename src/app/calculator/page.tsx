@@ -3,7 +3,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { usePriceStore } from '@/store/priceStore'
 import { connectUpbitWS } from '@/lib/upbit'
-import { connectBinanceWS } from '@/lib/binance'
 import GlassCard from '@/components/ui/GlassCard'
 import NumberTicker from '@/components/ui/NumberTicker'
 
@@ -22,7 +21,7 @@ function fromKrw(krw: number, unit: Unit, usdtKrw: number, btcKrw: number): numb
 }
 
 export default function CalculatorPage() {
-  const { usdtKrw, btcKrw, setUpbit, setBinance } = usePriceStore()
+  const { usdtKrw, btcKrw, setUpbit } = usePriceStore()
 
   useEffect(() => {
     let usdt = 0
@@ -32,14 +31,10 @@ export default function CalculatorPage() {
       if (market === 'KRW-BTC') btc = price
       if (usdt && btc) setUpbit(usdt, btc)
     })
-    const binanceWs = connectBinanceWS((symbol, price) => {
-      if (symbol === 'BTCUSDT') setBinance(price)
-    })
     return () => {
       upbitWs.close()
-      binanceWs.close()
     }
-  }, [setUpbit, setBinance])
+  }, [setUpbit])
 
   const [amount, setAmount] = useState('1')
   const [fromUnit, setFromUnit] = useState<Unit>('USDT')
