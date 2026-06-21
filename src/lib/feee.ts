@@ -6,8 +6,8 @@
 const BASE = 'https://feee.io/open'
 const USER_AGENT = 'CottonCandyCoin/1.0.0 (https://feee.io)'
 
-// 가격 조회용 기준 에너지량 ("TRX / 1만" 표기 기준)
-const REFERENCE_ENERGY = 10000
+// 가격 조회용 기준 에너지량 (Feee.io 최소 주문량이 32000이라 그 아래로는 조회 자체가 거부됨)
+const REFERENCE_ENERGY = 32000
 
 function getKey(): string {
   const key = process.env.FEEE_API_KEY
