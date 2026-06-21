@@ -58,7 +58,7 @@ export default function Home() {
   }, [setUsdKrw])
 
   return (
-    <div className="mx-auto max-w-6xl px-5 pb-24">
+    <div className="mx-auto max-w-6xl px-6 pb-24">
       {/* 히어로 */}
       <section className="relative flex flex-col items-center text-center gap-4 py-16">
         <Mascot size={120} className="mb-2" />

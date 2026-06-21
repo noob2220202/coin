@@ -48,10 +48,10 @@ export default function CalculatorPage() {
   }, [amount, fromUnit, toUnit, usdtKrw, btcKrw])
 
   return (
-    <div className="mx-auto max-w-xl px-5 pb-24 flex flex-col gap-8">
+    <div className="mx-auto max-w-xl px-6 pb-24 flex flex-col gap-8">
       <h1 className="font-gowun text-2xl text-candy text-center">환산 계산기 🍭</h1>
 
-      <GlassCard glow="lav" className="p-6 flex flex-col gap-4">
+      <GlassCard glow="lav" className="p-7 flex flex-col gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <input
             type="number"

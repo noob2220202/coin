@@ -22,11 +22,11 @@ const glowClass: Record<Glow, string> = {
 export default function GlassCard({ glow, children, className = '', ...props }: GlassCardProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.96 }}
+      initial={{ opacity: 0, scale: 0.97 }}
       animate={{ opacity: 1, scale: 1 }}
-      whileHover={{ scale: 1.02, y: -4 }}
+      whileHover={{ scale: 1.015, y: -3 }}
       whileTap={{ scale: 0.99 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.4, ease: 'easeOut' }}
       className={`glass-card ${glow ? glowClass[glow] : ''} ${className}`}
       {...props}
     >
