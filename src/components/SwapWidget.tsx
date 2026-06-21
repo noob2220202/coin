@@ -54,8 +54,23 @@ function CurrencySelect({ label, currencies, value, onChange }: CurrencySelectPr
         onClick={() => setOpen((v) => !v)}
         className="candy-input w-full flex items-center justify-between px-4 py-3 mt-1"
       >
-        <span className="font-noto">
-          {value ? `${value.name} (${value.ticker.toUpperCase()})` : '코인 선택'}
+        <span className="font-noto flex items-center gap-2">
+          {value ? (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={value.image}
+                alt=""
+                className="w-5 h-5 rounded-full"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none'
+                }}
+              />
+              {`${value.name} (${value.ticker.toUpperCase()})`}
+            </>
+          ) : (
+            '코인 선택'
+          )}
         </span>
         <ChevronDown size={18} className="text-candy-lav" />
       </button>
@@ -90,6 +105,15 @@ function CurrencySelect({ label, currencies, value, onChange }: CurrencySelectPr
                 }}
                 className="w-full flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-candy-lav/10 text-left"
               >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={c.image}
+                  alt=""
+                  className="w-5 h-5 rounded-full shrink-0"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none'
+                  }}
+                />
                 <span className="font-quick text-sm">{c.ticker.toUpperCase()}</span>
                 <span className="font-noto text-xs text-muted">{c.name}</span>
               </button>
