@@ -5,6 +5,8 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const fromCurrency = searchParams.get('fromCurrency')
   const toCurrency = searchParams.get('toCurrency')
+  const fromNetwork = searchParams.get('fromNetwork') ?? undefined
+  const toNetwork = searchParams.get('toNetwork') ?? undefined
 
   if (!fromCurrency || !toCurrency) {
     return NextResponse.json(
@@ -14,7 +16,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const data = await getMinAmount(fromCurrency, toCurrency)
+    const data = await getMinAmount(fromCurrency, toCurrency, fromNetwork, toNetwork)
     return NextResponse.json(data)
   } catch (err) {
     console.error('[스왑] 최소 금액 조회 실패', err)

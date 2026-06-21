@@ -3,7 +3,7 @@ import { createExchange } from '@/lib/changenow'
 
 export async function POST(req: NextRequest) {
   const body = await req.json()
-  const { fromCurrency, toCurrency, fromAmount, address } = body
+  const { fromCurrency, toCurrency, fromAmount, address, fromNetwork, toNetwork } = body
 
   if (!fromCurrency || !toCurrency || !fromAmount || !address) {
     return NextResponse.json(
@@ -19,6 +19,8 @@ export async function POST(req: NextRequest) {
       fromAmount,
       address,
       flow: 'standard',
+      fromNetwork,
+      toNetwork,
     })
     return NextResponse.json(data)
   } catch (err) {

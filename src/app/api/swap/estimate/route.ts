@@ -6,6 +6,8 @@ export async function GET(req: NextRequest) {
   const fromCurrency = searchParams.get('fromCurrency')
   const toCurrency = searchParams.get('toCurrency')
   const fromAmount = Number(searchParams.get('fromAmount'))
+  const fromNetwork = searchParams.get('fromNetwork') ?? undefined
+  const toNetwork = searchParams.get('toNetwork') ?? undefined
 
   if (!fromCurrency || !toCurrency || !fromAmount) {
     return NextResponse.json(
@@ -15,7 +17,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const data = await getEstimatedAmount(fromCurrency, toCurrency, fromAmount)
+    const data = await getEstimatedAmount(fromCurrency, toCurrency, fromAmount, fromNetwork, toNetwork)
     return NextResponse.json(data)
   } catch (err) {
     console.error('[스왑] 예상 수령량 조회 실패', err)

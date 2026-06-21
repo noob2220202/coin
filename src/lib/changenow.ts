@@ -34,10 +34,24 @@ export async function getCurrencies() {
   return changeNowFetch('/exchange/currencies?active=true&flow=standard')
 }
 
+// USDT 등 여러 네트워크에 동시 존재하는 코인은 network를 안 주면
+// ChangeNow가 "Please specify network for currency xxx" 에러를 반환한다
+function networkParams(fromNetwork?: string, toNetwork?: string): string {
+  let qs = ''
+  if (fromNetwork) qs += `&fromNetwork=${fromNetwork}`
+  if (toNetwork) qs += `&toNetwork=${toNetwork}`
+  return qs
+}
+
 // 최소 교환 금액
-export async function getMinAmount(fromCurrency: string, toCurrency: string) {
+export async function getMinAmount(
+  fromCurrency: string,
+  toCurrency: string,
+  fromNetwork?: string,
+  toNetwork?: string
+) {
   return changeNowFetch(
-    `/exchange/min-amount?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&flow=standard`
+    `/exchange/min-amount?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&flow=standard${networkParams(fromNetwork, toNetwork)}`
   )
 }
 
@@ -45,10 +59,12 @@ export async function getMinAmount(fromCurrency: string, toCurrency: string) {
 export async function getEstimatedAmount(
   fromCurrency: string,
   toCurrency: string,
-  fromAmount: number
+  fromAmount: number,
+  fromNetwork?: string,
+  toNetwork?: string
 ) {
   return changeNowFetch(
-    `/exchange/estimated-amount?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&fromAmount=${fromAmount}&flow=standard`
+    `/exchange/estimated-amount?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&fromAmount=${fromAmount}&flow=standard${networkParams(fromNetwork, toNetwork)}`
   )
 }
 
@@ -59,6 +75,8 @@ export async function createExchange(body: {
   fromAmount: number
   address: string
   flow: 'standard'
+  fromNetwork?: string
+  toNetwork?: string
 }) {
   return changeNowFetch('/exchange', {
     method: 'POST',

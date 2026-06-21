@@ -144,7 +144,12 @@ export default function SwapWidget() {
       setEstimating(true)
       try {
         const { data: minData } = await axios.get('/api/swap/min-amount', {
-          params: { fromCurrency: fromCurrency.ticker, toCurrency: toCurrency.ticker },
+          params: {
+            fromCurrency: fromCurrency.ticker,
+            toCurrency: toCurrency.ticker,
+            fromNetwork: fromCurrency.network,
+            toNetwork: toCurrency.network,
+          },
         })
         setMinAmount(minData.minAmount ?? null)
 
@@ -153,6 +158,8 @@ export default function SwapWidget() {
             fromCurrency: fromCurrency.ticker,
             toCurrency: toCurrency.ticker,
             fromAmount: Number(fromAmount),
+            fromNetwork: fromCurrency.network,
+            toNetwork: toCurrency.network,
           },
         })
         setToAmount(estData.toAmount ?? null)
@@ -206,6 +213,8 @@ export default function SwapWidget() {
         toCurrency: toCurrency.ticker,
         fromAmount: Number(fromAmount),
         address,
+        fromNetwork: fromCurrency.network,
+        toNetwork: toCurrency.network,
       })
       setExchange({ id: data.id, payinAddress: data.payinAddress })
       setExchangeStatus('new')
