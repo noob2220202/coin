@@ -14,6 +14,7 @@ export async function GET(req: NextRequest) {
     const data = await getEnergyQuote(energy, duration)
     return NextResponse.json(data)
   } catch (err) {
+    console.error('[에너지] 견적 조회 실패', err)
     return NextResponse.json(
       { error: err instanceof Error ? err.message : '견적 조회 실패' },
       { status: 500 }

@@ -6,6 +6,7 @@ export async function GET(req: NextRequest, { params }: { params: { orderNo: str
     const data = await getOrderStatus(params.orderNo)
     return NextResponse.json(data)
   } catch (err) {
+    console.error('[에너지] 상태 조회 실패', err)
     return NextResponse.json(
       { error: err instanceof Error ? err.message : '상태 조회 실패' },
       { status: 500 }

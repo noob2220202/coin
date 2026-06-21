@@ -17,6 +17,7 @@ export async function GET(req: NextRequest) {
     const data = await getMinAmount(fromCurrency, toCurrency)
     return NextResponse.json(data)
   } catch (err) {
+    console.error('[스왑] 최소 금액 조회 실패', err)
     return NextResponse.json(
       { error: err instanceof Error ? err.message : '최소 금액 조회 실패' },
       { status: 500 }

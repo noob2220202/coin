@@ -8,21 +8,37 @@ function getKey(): string {
   return key
 }
 
+// ChangeNow는 에러여도 200이 아닌 상태코드 + JSON 바디로 응답하므로
+// res.ok를 확인하지 않으면 에러 응답을 정상 데이터처럼 통과시키게 된다
+async function changeNowFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  const res = await fetch(`${BASE}${path}`, {
+    ...init,
+    headers: {
+      'x-changenow-api-key': getKey(),
+      ...init?.headers,
+    },
+  })
+  const json = await res.json().catch(() => null)
+  if (!res.ok) {
+    const message =
+      (json && typeof json.message === 'string' && json.message) ||
+      (json && typeof json.error === 'string' && json.error) ||
+      `ChangeNow API 오류 (HTTP ${res.status})`
+    throw new Error(message)
+  }
+  return json as T
+}
+
 // 지원 코인 목록
 export async function getCurrencies() {
-  const res = await fetch(`${BASE}/exchange/currencies?active=true&flow=standard`, {
-    headers: { 'x-changenow-api-key': getKey() },
-  })
-  return res.json()
+  return changeNowFetch('/exchange/currencies?active=true&flow=standard')
 }
 
 // 최소 교환 금액
 export async function getMinAmount(fromCurrency: string, toCurrency: string) {
-  const res = await fetch(
-    `${BASE}/exchange/min-amount?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&flow=standard`,
-    { headers: { 'x-changenow-api-key': getKey() } }
+  return changeNowFetch(
+    `/exchange/min-amount?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&flow=standard`
   )
-  return res.json()
 }
 
 // 예상 수령량
@@ -31,11 +47,9 @@ export async function getEstimatedAmount(
   toCurrency: string,
   fromAmount: number
 ) {
-  const res = await fetch(
-    `${BASE}/exchange/estimated-amount?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&fromAmount=${fromAmount}&flow=standard`,
-    { headers: { 'x-changenow-api-key': getKey() } }
+  return changeNowFetch(
+    `/exchange/estimated-amount?fromCurrency=${fromCurrency}&toCurrency=${toCurrency}&fromAmount=${fromAmount}&flow=standard`
   )
-  return res.json()
 }
 
 // 교환 생성
@@ -46,21 +60,14 @@ export async function createExchange(body: {
   address: string
   flow: 'standard'
 }) {
-  const res = await fetch(`${BASE}/exchange`, {
+  return changeNowFetch('/exchange', {
     method: 'POST',
-    headers: {
-      'x-changenow-api-key': getKey(),
-      'Content-Type': 'application/json',
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   })
-  return res.json()
 }
 
 // 거래 상태 조회
 export async function getExchangeStatus(id: string) {
-  const res = await fetch(`${BASE}/exchange/by-id?id=${id}`, {
-    headers: { 'x-changenow-api-key': getKey() },
-  })
-  return res.json()
+  return changeNowFetch(`/exchange/by-id?id=${id}`)
 }

@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
     const data = await getEstimatedAmount(fromCurrency, toCurrency, fromAmount)
     return NextResponse.json(data)
   } catch (err) {
+    console.error('[스왑] 예상 수령량 조회 실패', err)
     return NextResponse.json(
       { error: err instanceof Error ? err.message : '예상 수령량 조회 실패' },
       { status: 500 }

@@ -22,6 +22,7 @@ export async function POST(req: NextRequest) {
     })
     return NextResponse.json(data)
   } catch (err) {
+    console.error('[스왑] 교환 생성 실패', err)
     return NextResponse.json(
       { error: err instanceof Error ? err.message : '교환 생성 실패' },
       { status: 500 }

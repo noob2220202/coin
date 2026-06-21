@@ -16,6 +16,7 @@ export async function POST(req: NextRequest) {
     const data = await rentEnergy({ receiver, energy, duration })
     return NextResponse.json(data)
   } catch (err) {
+    console.error('[에너지] 임대 실패', err)
     return NextResponse.json(
       { error: err instanceof Error ? err.message : '에너지 임대 실패' },
       { status: 500 }
