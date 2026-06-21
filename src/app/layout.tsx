@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Toaster } from 'react-hot-toast'
 import CloudBackground from '@/components/CloudBackground'
 import Navbar from '@/components/Navbar'
+import AdBanner from '@/components/AdBanner'
 import '@fontsource/jua/400.css'
 import '@fontsource/space-grotesk/300.css'
 import '@fontsource/space-grotesk/400.css'
@@ -32,7 +33,10 @@ export default function RootLayout({
       <body className="antialiased">
         <CloudBackground />
         <Navbar />
-        <main className="relative z-10 pt-24">{children}</main>
+        <main className="relative z-10 pt-24">
+          <AdBanner />
+          {children}
+        </main>
         <Toaster
           toastOptions={{
             style: {
