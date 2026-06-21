@@ -59,7 +59,8 @@ export default function AdminPage() {
 
   const addBanner = () => {
     if (!config) return
-    const banner: BannerAd = { id: crypto.randomUUID(), image: '', href: '', alt: '광고' }
+    const id = Date.now().toString(36) + Math.random().toString(36).slice(2)
+    const banner: BannerAd = { id, image: '', href: '', alt: '광고' }
     setConfig({ ...config, banners: [...config.banners, banner] })
   }
 

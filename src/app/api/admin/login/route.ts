@@ -11,10 +11,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: '비밀번호가 일치하지 않습니다' }, { status: 401 })
   }
 
+  const isHttps =
+    req.nextUrl.protocol === 'https:' || req.headers.get('x-forwarded-proto') === 'https'
+
   const res = NextResponse.json({ ok: true })
   res.cookies.set(ADMIN_COOKIE, token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: isHttps,
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 24 * 7,
