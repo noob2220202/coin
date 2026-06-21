@@ -134,7 +134,40 @@ export default function SwapWidget() {
   }, [])
 
   useEffect(() => {
+    if (!fromCurrency || !toCurrency) {
+      setMinAmount(null)
+      return
+    }
+    let cancelled = false
+    axios
+      .get('/api/swap/min-amount', {
+        params: {
+          fromCurrency: fromCurrency.ticker,
+          toCurrency: toCurrency.ticker,
+          fromNetwork: fromCurrency.network,
+          toNetwork: toCurrency.network,
+        },
+      })
+      .then(({ data }) => {
+        if (!cancelled) setMinAmount(data.minAmount ?? null)
+      })
+      .catch(() => {
+        if (!cancelled) setMinAmount(null)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [fromCurrency, toCurrency])
+
+  useEffect(() => {
     if (!fromCurrency || !toCurrency || !fromAmount || Number(fromAmount) <= 0) {
+      setToAmount(null)
+      return
+    }
+
+    // ChangeNow는 최소 금액 미달 시 estimated-amount 호출 자체를 에러로 반환하므로
+    // minAmount를 먼저 확인해 미달이면 호출하지 않는다 (불필요한 에러 토스트 방지)
+    if (minAmount !== null && Number(fromAmount) < minAmount) {
       setToAmount(null)
       return
     }
@@ -143,16 +176,6 @@ export default function SwapWidget() {
     debounceRef.current = setTimeout(async () => {
       setEstimating(true)
       try {
-        const { data: minData } = await axios.get('/api/swap/min-amount', {
-          params: {
-            fromCurrency: fromCurrency.ticker,
-            toCurrency: toCurrency.ticker,
-            fromNetwork: fromCurrency.network,
-            toNetwork: toCurrency.network,
-          },
-        })
-        setMinAmount(minData.minAmount ?? null)
-
         const { data: estData } = await axios.get('/api/swap/estimate', {
           params: {
             fromCurrency: fromCurrency.ticker,
@@ -173,7 +196,7 @@ export default function SwapWidget() {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current)
     }
-  }, [fromCurrency, toCurrency, fromAmount])
+  }, [fromCurrency, toCurrency, fromAmount, minAmount])
 
   useEffect(() => {
     if (!exchange) return
@@ -275,6 +298,11 @@ export default function SwapWidget() {
         placeholder="금액 입력"
         className="candy-input w-full px-4 py-3 num"
       />
+      {minAmount !== null && (
+        <p className="font-noto text-xs text-muted -mt-3">
+          최소 {minAmount} {fromCurrency?.ticker.toUpperCase()} 이상 입력해주세요
+        </p>
+      )}
 
       <div className="flex justify-center">
         <button
