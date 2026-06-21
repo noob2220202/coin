@@ -1,9 +1,9 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import toast from 'react-hot-toast'
-import { Trash2 } from 'lucide-react'
+import { Trash2, ImagePlus } from 'lucide-react'
 import GlassCard from '@/components/ui/GlassCard'
 import CandyButton from '@/components/ui/CandyButton'
 import type { BannerAd, SiteConfig } from '@/types'
@@ -14,6 +14,8 @@ export default function AdminPage() {
   const [loggingIn, setLoggingIn] = useState(false)
   const [config, setConfig] = useState<SiteConfig | null>(null)
   const [saving, setSaving] = useState(false)
+  const [uploadingId, setUploadingId] = useState<string | null>(null)
+  const fileInputs = useRef<Record<string, HTMLInputElement | null>>({})
 
   useEffect(() => {
     axios
@@ -75,6 +77,20 @@ export default function AdminPage() {
   const removeBanner = (id: string) => {
     if (!config) return
     setConfig({ ...config, banners: config.banners.filter((b) => b.id !== id) })
+  }
+
+  const handlePickImage = async (id: string, file: File) => {
+    setUploadingId(id)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      const { data } = await axios.post('/api/admin/upload', formData)
+      updateBanner(id, 'image', data.url)
+    } catch {
+      toast.error('이미지 업로드 실패')
+    } finally {
+      setUploadingId(null)
+    }
   }
 
   if (authed === null) return null
@@ -146,12 +162,44 @@ export default function AdminPage() {
 
         {config.banners.map((b) => (
           <div key={b.id} className="flex flex-col gap-2 candy-input p-3">
-            <input
-              value={b.image}
-              onChange={(e) => updateBanner(b.id, 'image', e.target.value)}
-              placeholder="이미지/GIF URL (또는 /ads/파일명)"
-              className="bg-transparent outline-none text-sm font-noto border-b border-soft pb-1"
-            />
+            <div className="flex items-center gap-2">
+              <input
+                value={b.image}
+                onChange={(e) => updateBanner(b.id, 'image', e.target.value)}
+                placeholder="이미지/GIF URL (또는 /ads/파일명)"
+                className="bg-transparent outline-none text-sm font-noto border-b border-soft pb-1 flex-1"
+              />
+              <input
+                ref={(el) => {
+                  fileInputs.current[b.id] = el
+                }}
+                type="file"
+                accept="image/png,image/jpeg,image/gif,image/webp,image/svg+xml"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  e.target.value = ''
+                  if (file) handlePickImage(b.id, file)
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => fileInputs.current[b.id]?.click()}
+                disabled={uploadingId === b.id}
+                className="text-candy-lav/80 hover:text-candy-lav disabled:opacity-40"
+                title="갤러리에서 선택"
+              >
+                <ImagePlus size={18} />
+              </button>
+            </div>
+            {b.image && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={b.image}
+                alt={b.alt}
+                className="h-20 w-full object-cover rounded-lg"
+              />
+            )}
             <input
               value={b.href}
               onChange={(e) => updateBanner(b.id, 'href', e.target.value)}
