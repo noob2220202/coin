@@ -1,0 +1,3 @@
+xn--2e0bk93e.com, www.xn--2e0bk93e.com {
+	reverse_proxy 127.0.0.1:3002
+}

@@ -1,0 +1,15 @@
+[Unit]
+Description=coin (Next.js)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/www/coin
+EnvironmentFile=/var/www/coin/.env.local
+ExecStart=/usr/bin/npm run start
+Restart=on-failure
+RestartSec=5
+User=www-data
+
+[Install]
+WantedBy=multi-user.target
