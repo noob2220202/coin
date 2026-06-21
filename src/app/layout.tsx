@@ -33,10 +33,8 @@ export default function RootLayout({
       <body className="antialiased">
         <CloudBackground />
         <Navbar />
-        <main className="relative z-10 pt-24">
-          <AdBanner />
-          {children}
-        </main>
+        <main className="relative z-10 pt-24">{children}</main>
+        <AdBanner />
         <Toaster
           toastOptions={{
             style: {

@@ -58,3 +58,16 @@ export interface RentEnergyResult {
   payAmount: number
   status: string
 }
+
+export interface BannerAd {
+  id: string
+  image: string
+  href: string
+  alt: string
+}
+
+export interface SiteConfig {
+  swapEnabled: boolean
+  energyEnabled: boolean
+  banners: BannerAd[]
+}
